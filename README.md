@@ -1,6 +1,6 @@
 Mammogram preprocessing:
 
-- Bit conversion
-- Cropping
-- Denoising
+- Bit conversion from 12 to 16 bits
+- Image cropping
+- Image denoising
 - Enhance the contrast
