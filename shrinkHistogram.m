@@ -54,3 +54,4 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
     
     %third method    
     %imageCopy = uint8(image/256);
+    
