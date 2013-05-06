@@ -7,8 +7,8 @@ function reducedImage = reduceWorkArea(originalImage)
 
     bw = im2bw(originalImage, threshold);
     xcolormap = [0.5 0.5 1; 0.9 0.9 0.9]; % background; foreground
-    imshow(bw, xcolormap);
-    print(fig, '-dpsc2', 'whiteandblack.eps');    
+    %imshow(bw, xcolormap);
+    %print(fig, '-dpsc2', 'whiteandblack.eps');    
 
     % bw =~ bw;
     % ifigure, imshow(bw);
@@ -20,11 +20,11 @@ function reducedImage = reduceWorkArea(originalImage)
 
     % delete the little objects
     bw2 = bwareaopen(bw, 10000); % delete objects with less than 10000 pixels
-    imshow(bw2, xcolormap);
-    print(fig, '-dpsc2', 'deleteobj.eps');    
+    %imshow(bw2, xcolormap);
+    %print(fig, '-dpsc2', 'deleteobj.eps');    
     bw2 = imfill(bw2, 'holes'); % fill the black sections
-    imshow(bw2, xcolormap);
-    print(fig, '-dpsc2', 'fillholes.eps');    
+    %imshow(bw2, xcolormap);
+    %print(fig, '-dpsc2', 'fillholes.eps');    
 
     boundaries = bwboundaries(bw2, 'noholes');
     hold on;
@@ -32,10 +32,10 @@ function reducedImage = reduceWorkArea(originalImage)
     % draw boundaries
     for x = 1:length(boundaries)
         boundary = boundaries{x};
-        plot(boundary(:,2), boundary(:,1), 'r', 'LineWidth', 2);
+        %plot(boundary(:,2), boundary(:,1), 'r', 'LineWidth', 2);
     end
 
-    print(fig, '-dpsc2', 'bordering.eps');    
+    % print(fig, '-dpsc2', 'bordering.eps');    
 
     hold on;
 
@@ -54,8 +54,8 @@ function reducedImage = reduceWorkArea(originalImage)
     % cut the figure
     % figure, imshow(originalImage(min_y: max_y, min_x:max_x)); % a.dcm and c.dcm
     reducedImage = originalImage(min_y: max_y, min_x:max_x);
-    imshow(reducedImage);
-    colormap bone;
-    print(fig, '-dpsc2', 'reduced.eps');    
+    %imshow(reducedImage);
+    %colormap bone;
+    %print(fig, '-dpsc2', 'reduced.eps');    
     %imshow(image(min_y: max_y+150, min_x-150:max_x)); % b.dcm and d.dcm
 
