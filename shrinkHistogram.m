@@ -12,7 +12,7 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
     end
     % plot original histogram
     fig = figure;
-    subplot(1, 2, 1);
+    subplot(3, 2, 1);
     bar(data(2:end)); grid on;
     
     % shrink histogram, the gaps are deleted
@@ -27,11 +27,18 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
         end
     end
     % plot shrunk histogram
-    subplot(1, 2, 2);
+    subplot(3, 2, 2);
     bar(newData(2:end)); grid on;
 
     % modify the image from the new histogram
     image = shrinkImage(image, usedGrayLevels, grays);
+
+    % the image must be darker, his histogram similar to the before
+    subplot(3, 2, 3);
+    imshow(image);
+    [a b] = imhist(image);
+    subplot(3, 2, 4);
+    bar(a(2:end)); grid on;
 
     % compresion
     [height width] = size(image);
@@ -52,6 +59,13 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
            imageCopy(h, w) = image(h, w)/divider;
         end
     end
+
+    % show image compressed and his histogram
+    subplot(3, 2, 5);
+    imshow(imageCopy);
+    [a b] = imhist(imageCopy);
+    subplot(3, 2, 6);
+    bar(a(2:end)); grid on;
 
     %second method
     %[height width] = size(image);
