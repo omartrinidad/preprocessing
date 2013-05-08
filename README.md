@@ -1,4 +1,4 @@
-Mammogram preprocessing:
+# Mammogram preprocessing:
 
 - Bit conversion from 12 to 16 bits.
 - Image cropping.

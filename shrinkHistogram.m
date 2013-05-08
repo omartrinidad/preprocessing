@@ -1,32 +1,45 @@
 % Shrink histogram to compress the image
 
 function [newData imageCopy] = shrinkHistogram(image, grayrange)
-    %image = imadjust(image, [0, 1.0], [0.5, 0.8]);
     grays = 2^grayrange;
-    data = imhist(image, grays); 
-    %[x y] = size(data);
+    [data, x] = imhist(image, grays); 
+    [width height] = size(data);
     usedGrayLevels = 0;
     for i=1:1:grays
         if data(i) ~= 0
             usedGrayLevels = usedGrayLevels + 1;
         end
     end
-
-    newData = zeros(usedGrayLevels, 1);
+    % plot original histogram
+    fig = figure;
+    subplot(1, 2, 1);
+    bar(data(2:end)); grid on;
     
+    % shrink histogram, the gaps are deleted
+    newData = zeros(width, 1);
+    newX = zeros(width, 1);
     index = 1;
     for i=1:1:grays
         if data(i) ~= 0
            newData(index) = data(i);
+           newX(index) = x(i);
            index = index + 1;
         end
     end
+    % plot shrunk histogram
+    subplot(1, 2, 2);
+    bar(newData(2:end)); grid on;
+
+    % modify the image from the new histogram
+    image = shrinkImage(image, usedGrayLevels, grays);
 
     % compresion
     [height width] = size(image);
     imageCopy = repmat(uint8(0), height, width);
     divider = 0.0;
-    maxLevel = double(max(image(:)));
+    %maxLevel = double(max(image(:))); % good quality image
+    %maxLevel = double(newData(:)); % image too dark
+    maxLevel = double(usedGrayLevels);
     
     while 1
         divider = divider + 0.01;
@@ -54,4 +67,9 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
     
     %third method    
     %imageCopy = uint8(image/256);
-    
+
+function newImage = shrinkImage(image, minVal, maxVal)
+    valueDesired = 1.0/(maxVal/minVal);
+    fprintf('valueDesired: %f\n', valueDesired);
+    fprintf('maxVal: %f and minVal: %f\n', maxVal, minVal);
+    newImage = imadjust(image, [0, 1.0], [0.0, valueDesired]);
