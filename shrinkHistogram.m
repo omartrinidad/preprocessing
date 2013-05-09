@@ -30,8 +30,6 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
     [height width] = size(image);
     imageCopy = repmat(uint8(0), height, width);
     divider = 0.0;
-    %maxLevel = double(max(image(:))); % good quality image
-    %maxLevel = double(newData(:)); % image too dark
     maxLevel = double(usedGrayLevels);
     
     while 1
