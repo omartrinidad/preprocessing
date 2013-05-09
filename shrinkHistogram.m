@@ -11,8 +11,9 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
         end
     end
     % plot original histogram
+    fig = figure;
     bar(data(2:end)); grid on;
-    % this comment only must see in eps
+    print(fig, '-dpsc2', 'original-image-histogram.eps');
     
     % shrink histogram, the gaps are deleted
     newData = zeros(width, 1);
