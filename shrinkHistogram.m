@@ -11,9 +11,8 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
         end
     end
     % plot original histogram
-    fig = figure;
-    subplot(3, 2, 1);
     bar(data(2:end)); grid on;
+    
     
     % shrink histogram, the gaps are deleted
     newData = zeros(width, 1);
