@@ -10,10 +10,10 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
             usedGrayLevels = usedGrayLevels + 1;
         end
     end
-    % plot original histogram
     fig = figure;
+    % plot original histogram
     bar(data(2:end)); grid on;
-    print(fig, '-dpsc2', 'original-image-histogram.eps');
+    print(fig, '-dpsc2', 'images/original-image-histogram.eps');
     
     % shrink histogram, the gaps are deleted
     newData = zeros(width, 1);
@@ -27,18 +27,20 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
         end
     end
     % plot shrunk histogram
-    subplot(3, 2, 2);
     bar(newData(2:end)); grid on;
+    print(fig, '-dpsc2', 'images/shrunk-histogram.eps');
 
     % modify the image from the new histogram
     image = shrinkImage(image, usedGrayLevels, grays);
 
-    % the image must be darker, his histogram similar to the before
-    subplot(3, 2, 3);
+    % dark mammogram
     imshow(image);
+    print(fig, '-dpsc2', 'images/dark-mammogram.eps');
+    
+    % dark mammogram histogram
     [a b] = imhist(image);
-    subplot(3, 2, 4);
     bar(a(2:end)); grid on;
+    print(fig, '-dpsc2', 'images/dark-mammogram-histogram.eps');
 
     % compresion
     [height width] = size(image);
@@ -60,12 +62,13 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
         end
     end
 
-    % show image compressed and his histogram
-    subplot(3, 2, 5);
+    % compressed mammogram
     imshow(imageCopy);
+    print(fig, '-dpsc2', 'images/compressed-mammogram.eps');
+    % compressed mammogram histogram
     [a b] = imhist(imageCopy);
-    subplot(3, 2, 6);
     bar(a(2:end)); grid on;
+    print(fig, '-dpsc2', 'images/compressed-mammogram-histogram.eps');
 
     %second method
     %[height width] = size(image);
