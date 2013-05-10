@@ -46,9 +46,7 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
     bar(a(2:end)); grid on; axis off;
     print(fig, '-dpsc2', 'images/dark-mammogram-histogram.eps');
 
-    % compression I have doubts in this part.
-
-    % enhancement and normalization
+    % compression
     [height width] = size(image);
     imageCopy = repmat(uint8(0), height, width);
     divider = 0.0;
