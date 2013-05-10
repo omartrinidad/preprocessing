@@ -1,6 +1,11 @@
 % Shrink histogram to compress the image
 
 function [newData imageCopy] = shrinkHistogram(image, grayrange)
+    fig = figure;
+    % original mammogram 16 bits
+    imshow(image); colormap bone;
+    print(fig, '-dpsc2', 'images/original-mammogram-16bits.eps');
+    
     grays = 2^grayrange;
     [data, x] = imhist(image, grays); 
     [width height] = size(data);
@@ -10,9 +15,8 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
             usedGrayLevels = usedGrayLevels + 1;
         end
     end
-    fig = figure;
     % plot original histogram
-    bar(data(2:end)); grid on;
+    bar(data(2:end)); grid on; axis off;
     print(fig, '-dpsc2', 'images/original-image-histogram.eps');
     
     % shrink histogram, the gaps are deleted
@@ -27,27 +31,27 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
         end
     end
     % plot shrunk histogram
-    bar(newData(2:end)); grid on;
+    bar(newData(2:end)); grid on; axis off;
     print(fig, '-dpsc2', 'images/shrunk-histogram.eps');
 
     % modify the image from the new histogram
     image = shrinkImage(image, usedGrayLevels, grays);
 
-    % dark mammogram
-    imshow(image);
+    % dark mammogram 16 bits
+    imshow(image); colormap bone;
     print(fig, '-dpsc2', 'images/dark-mammogram.eps');
     
     % dark mammogram histogram
     [a b] = imhist(image);
-    bar(a(2:end)); grid on;
+    bar(a(2:end)); grid on; axis off;
     print(fig, '-dpsc2', 'images/dark-mammogram-histogram.eps');
 
-    % compresion
+    % compression I have doubts in this part.
+
+    % enhancement and normalization
     [height width] = size(image);
     imageCopy = repmat(uint8(0), height, width);
     divider = 0.0;
-    %maxLevel = double(max(image(:))); % good quality image
-    %maxLevel = double(newData(:)); % image too dark
     maxLevel = double(usedGrayLevels);
     
     while 1
@@ -63,11 +67,11 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
     end
 
     % compressed mammogram
-    imshow(imageCopy);
-    print(fig, '-dpsc2', 'images/compressed-mammogram.eps');
+    imshow(imageCopy); colormap bone;
+    print(fig, '-dpsc2', 'images/compressed-mammogram-8bits.eps');
     % compressed mammogram histogram
     [a b] = imhist(imageCopy);
-    bar(a(2:end)); grid on;
+    bar(a(2:end)); grid on; axis off;
     print(fig, '-dpsc2', 'images/compressed-mammogram-histogram.eps');
 
     %second method
