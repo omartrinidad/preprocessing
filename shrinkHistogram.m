@@ -44,19 +44,10 @@ function [newData imageCopy] = shrinkHistogram(image, grayrange)
         end
     end
 
-    %second method
-    %[height width] = size(image);
-    %imageCopy = repmat(uint8(0), height, width);
-    %minValue = double(min(image(:)));
-    %maxValue = double(max(image(:)));
-    %piece = double(255.0/(maxValue - minValue));
-    %for h=1:1:height
-    %    for w=1:1:width
-    %       imageCopy(h, w) = uint8((image(h, w) - minValue)*piece);
-    %    end
-    %end
-    
-    %third method    
+    %normalization
+    imageCopy = normalization(image);
+   
+    % bit conversion without normalization
     %imageCopy = uint8(image/256);
 
 function newImage = shrinkImage(image, minVal, maxVal)
@@ -64,3 +55,15 @@ function newImage = shrinkImage(image, minVal, maxVal)
     fprintf('valueDesired: %f\n', valueDesired);
     fprintf('maxVal: %f and minVal: %f\n', maxVal, minVal);
     newImage = imadjust(image, [0, 1.0], [0.0, valueDesired]);
+
+function imageNormalized = normalization(image)
+    [height width] = size(image);
+    imageNormalized = repmat(uint8(0), height, width);
+    minValue = double(min(image(:)));
+    maxValue = double(max(image(:)));
+    piece = double(255.0/(maxValue - minValue));
+    for h=1:1:height
+        for w=1:1:width
+           imageNormalized(h, w) = uint8((image(h, w) - minValue)*piece);
+        end
+    end
