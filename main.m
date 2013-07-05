@@ -1,26 +1,66 @@
+
+% icons /usr/share/icons
+% get pixels with percentages
+
 function varargout = main(varargin)
     % Description of GUI and main variables
     % h is a handle structure
-    sizeScreen = get(0,'ScreenSize');
-    h.figure = figure('Position', sizeScreen,...
-           'Name', 'Preprocessing System of Mammograms',...
-           'NumberTitle', 'off',...
-           'MenuBar', 'none');
+    close all;
+    
+    sizeOfScreen = get(0,'ScreenSize');
+    hMainFigure = figure('position', sizeOfScreen,...
+           'name', 'Preprocessing System of Mammograms',...
+           'numbertitle', 'off',...
+           'menubar', 'none');
 
     % GUI Controls
-    %eth = uicontrol(hmf, 'Style','edit',...
-    %                'String','Enter your name here.',...
-    %                'Position',[130 150 130 120]);
+    % Position -> [hposition vposition hsize vsize] percentage
+    position = [.02 .02 .15 .94];
+    ph = uipanel('parent', hMainFigure, 'title', 'Image selector',...
+                 'position', position);
 
     % Menus
-    h.mainMenu = uimenu('Label', 'File');
-    openFile = uimenu(h.mainMenu, 'Label', 'Load image(s)');
-    set(openFile, 'callback', {@openFileCallback, h});
+    mainMenu = uimenu('label', 'File');
+    openFile = uimenu(mainMenu, 'label', 'Load image(s)', ...
+                      'callback', @openFileCallback);
 
     % Axe
-    h.mainAxe = axes('Units', 'Pixels', 'Position', [20, 20, 1200, 600]);
+    position = [.17 .02 .81 .94];
+    [weigth hight] = getSizeOfAxe(position, sizeOfScreen);
+    mainAxe = axes('parent', hMainFigure, 'visible', 'on', ...
+                   'position', position);
 
-% Callback functions
-function h = openFileCallback(hObject, eventdata, h)
-    disp('Testing Callbacks');
-    %[file path] = uigetfile({'*dcm'; '*.dicomdir'; '*.*'});
+    % function to convert percentage to pixels 
+    function [weigth hight] = getSizeOfAxe(percentages, sizeOfScreen)
+        sizeOfScreen = sizeOfScreen(3:4);
+        sizeOfScreen = [sizeOfScreen sizeOfScreen];
+        pixels = int16(percentages .* sizeOfScreen);
+        weigth = pixels(3)-pixels(1);
+        hight = pixels(4)-pixels(2);
+    end
+
+    % Callback functions
+    function openFileCallback(hObject, eventdata)
+        [files path] = uigetfile({'*dcm'; '*.dicomdir'; '*.*'},...
+                                'multiselect', 'on');
+        if ~path
+            return;
+        elseif ~iscell(files)
+            fprintf('Only one file choosed\n');
+            temp = files;
+            files = cell(1);
+            files{1} = temp;
+        end
+            pathfile = strcat(path, files{1});
+            I = dicomread(pathfile);
+            I = reduceWorkArea(I);
+            [h w] = size(I);
+            I = f12to16bits(I);
+            I = adpmedian(I, 7);
+            if hight < h && weigth < w
+                imshow(I(1:hight, 1:weigth));
+            else
+                imshow(I(1:h, 1:w));
+            end
+    end
+end % ending main function
