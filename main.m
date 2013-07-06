@@ -51,16 +51,25 @@ function varargout = main(varargin)
             files = cell(1);
             files{1} = temp;
         end
-            pathfile = strcat(path, files{1});
-            I = dicomread(pathfile);
-            I = reduceWorkArea(I);
-            [h w] = size(I);
-            I = f12to16bits(I);
-            I = adpmedian(I, 7);
-            if hight < h && weigth < w
-                imshow(I(1:hight, 1:weigth));
-            else
-                imshow(I(1:h, 1:w));
-            end
+        % load and show the image in the main Axe
+        pathfile = strcat(path, files{1});
+        I = dicomread(pathfile);
+        I = reduceWorkArea(I);
+        [h w] = size(I);
+        I = f12to16bits(I);
+        I = adpmedian(I, 7);
+        if hight < h && weigth < w
+            imshow(I(1:hight, 1:weigth));
+        else
+            imshow(I(1:h, 1:w));
+        end
+        colormap bone;
+        % load and show the images(s) in the left side
+        numberOfFiles = size(files, 2);
+        hAxes = zeros(numberOfFiles);
+        for i=1:numberOfFiles
+            fileToSelect = dicomread([path files{i}]);
+            hAxes(i) = axes('position', [0.04 0.04 0.1 0.25]);
+        end
     end
 end % ending main function
