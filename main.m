@@ -10,14 +10,14 @@ function varargout = main(varargin)
     sizeOfScreen = get(0,'ScreenSize');
     hMainFigure = figure('position', sizeOfScreen,...
            'name', 'Preprocessing System of Mammograms',...
-           'numbertitle', 'off',...
+           'numbertitle', 'off', 'dockcontrols', 'off', ...
            'menubar', 'none');
 
     % GUI Controls
     % Position -> [hposition vposition hsize vsize] percentage
-    position = [.02 .02 .15 .94];
+    positionLeftPanel = [.02 .02 .15 .94];
     ph = uipanel('parent', hMainFigure, 'title', 'Image selector',...
-                 'position', position);
+                 'position', positionLeftPanel);
 
     % Menus
     mainMenu = uimenu('label', 'File');
@@ -26,17 +26,18 @@ function varargout = main(varargin)
 
     % Axe
     position = [.17 .02 .81 .94];
-    [weigth hight] = getSizeOfAxe(position, sizeOfScreen);
+    [width height] = getSizeOfAxe(position, sizeOfScreen);
     mainAxe = axes('parent', hMainFigure, 'visible', 'on', ...
                    'position', position);
+    set(mainAxe, 'yticklabel', '', 'xticklabel', '');
 
     % function to convert percentage to pixels 
-    function [weigth hight] = getSizeOfAxe(percentages, sizeOfScreen)
+    function [width height] = getSizeOfAxe(percentages, sizeOfScreen)
         sizeOfScreen = sizeOfScreen(3:4);
         sizeOfScreen = [sizeOfScreen sizeOfScreen];
         pixels = int16(percentages .* sizeOfScreen);
-        weigth = pixels(3)-pixels(1);
-        hight = pixels(4)-pixels(2);
+        width = pixels(3)-pixels(1);
+        height = pixels(4)-pixels(2);
     end
 
     % Callback functions
@@ -57,19 +58,38 @@ function varargout = main(varargin)
         I = reduceWorkArea(I);
         [h w] = size(I);
         I = f12to16bits(I);
-        I = adpmedian(I, 7);
-        if hight < h && weigth < w
-            imshow(I(1:hight, 1:weigth));
+        % I = adpmedian(I, 7);
+        if height < h && width < w
+            imshow(I(1:height, 1:width));
         else
             imshow(I(1:h, 1:w));
         end
         colormap bone;
         % load and show the images(s) in the left side
+        % calculate left and right margins
+        space = 0.01;
+        left = positionLeftPanel(1) + space;
+        right = positionLeftPanel(3) - space;
+        down = positionLeftPanel(2) + space;
+        up = positionLeftPanel(4) - space;
+
+        % calculate height of each image
         numberOfFiles = size(files, 2);
+        heightOfImage = up - down - (space * numberOfFiles);
+        heightOfImage = heightOfImage/numberOfFiles;
+        
         hAxes = zeros(numberOfFiles);
         for i=1:numberOfFiles
             fileToSelect = dicomread([path files{i}]);
-            hAxes(i) = axes('position', [0.04 0.04 0.1 0.25]);
+            up = down + heightOfImage;
+            hAxes(i) = axes('position', [left down right-left up-down]);
+            down = up + space;
+            imagesc(fileToSelect, 'buttondownfcn', {@updateImage, hAxes(i)});
+            axis off; axis image;
         end
+    end % ending openFileCallback function
+
+    function updateImage(hObject, eventdata, axes)
+        imshow(axes, 'parent', hMainFigure);
     end
 end % ending main function
