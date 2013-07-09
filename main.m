@@ -12,6 +12,7 @@ function varargout = main(varargin)
            'name', 'Preprocessing System of Mammograms',...
            'numbertitle', 'off', 'dockcontrols', 'off', ...
            'menubar', 'none');
+    set(hMainFigure, 'keypressfcn', @mainKeyPressFcn);
 
     % GUI Controls
     % Position -> [hposition vposition hsize vsize] percentage
@@ -101,5 +102,22 @@ function varargout = main(varargin)
             imshow(I(1:h, 1:w));
         end
         colormap bone;
+    end % ending selectImage function
+    
+    % function to catch keyboard events
+    function mainKeyPressFcn(hObject, eventdata)
+        if strcmp(eventdata.Key, '0')
+            disp('más');
+        elseif strcmp(eventdata.Key, 'hyphen')
+            disp('menos');
+        elseif strcmp(eventdata.Key, 'uparrow')
+            disp('uparrow');
+        elseif strcmp(eventdata.Key, 'downarrow')
+            disp('downarrow');
+        elseif strcmp(eventdata.Key, 'leftarrow')
+            disp('leftarrow');
+        elseif strcmp(eventdata.Key, 'rightarrow')
+            disp('rightarrow');
+        end
     end
 end % ending main function
