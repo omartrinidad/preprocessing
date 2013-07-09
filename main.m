@@ -84,12 +84,22 @@ function varargout = main(varargin)
             up = down + heightOfImage;
             hAxes(i) = axes('position', [left down right-left up-down]);
             down = up + space;
-            imagesc(fileToSelect, 'buttondownfcn', {@updateImage, hAxes(i)});
+            imagesc(fileToSelect, 'buttondownfcn', {@showImageSelected, fileToSelect});
             axis off; axis image;
         end
     end % ending openFileCallback function
 
-    function updateImage(hObject, eventdata, axes)
-        imshow(axes, 'parent', hMainFigure);
+    function showImageSelected(hObject, eventdata, fileSelected)
+        axes(mainAxe); % use the Axe selected
+        I = reduceWorkArea(fileSelected);
+        [h w] = size(I);
+        I = f12to16bits(I);
+        % I = adpmedian(I, 7);
+        if height < h && width < w
+            imshow(I(1:height, 1:width));
+        else
+            imshow(I(1:h, 1:w));
+        end
+        colormap bone;
     end
 end % ending main function
