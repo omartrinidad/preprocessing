@@ -6,6 +6,7 @@ function varargout = main(varargin)
     % Description of GUI and main variables
 
     hMainFigure = findall(0, 'tag', 'maingui');
+    % Start Singleton
     if (isempty(hMainFigure))
         sizeOfScreen = get(0,'ScreenSize');
         hMainFigure = figure('position', sizeOfScreen,...
@@ -42,7 +43,7 @@ function varargout = main(varargin)
         figure(hMainFigure);
     end %end of Singleton
 
-    % ------------- Functions and callbacks
+    % -------------------------------------------------- Functions and callbacks
 
     % function to convert percentage to pixels 
     function [width height] = getSizeOfAxe(percentages, sizeOfScreen)
@@ -53,7 +54,7 @@ function varargout = main(varargin)
         height = pixels(4)-pixels(2);
     end
 
-    % Callback functions
+    % open files and load images in the axes
     function openFileCallback(hObject, eventdata)
         [files path] = uigetfile({'*dcm'; '*.dicomdir'; '*.*'},...
                                 'multiselect', 'on');
@@ -101,7 +102,7 @@ function varargout = main(varargin)
                     {@showImageSelected, fileToSelect});
             axis off; axis image;
         end
-    end
+    end % ending showImagesInPanel function
  
     function showImage(fileSelected)
         axes(mainAxe); % use the Axe selected
@@ -117,26 +118,35 @@ function varargout = main(varargin)
             imshow(section);
         end
         colormap bone;
-    end % ending selectImage function
+    end % ending showImage function
     
     % function to catch keyboard events, is possible control the 
     % image with the movement keys
     function mainKeyPressFcn(hObject, eventdata)
+        [limitH limitW] = size(I);
         if strcmp(eventdata.Key, '0')
             disp('más');
         elseif strcmp(eventdata.Key, 'hyphen')
             disp('menos');
         elseif strcmp(eventdata.Key, 'uparrow')
-            disp('uparrow');
+            if (a - sizeOfStep > 0)
+                a = a - sizeOfStep;
+            end
         elseif strcmp(eventdata.Key, 'downarrow')
-            a = a + sizeOfStep;
-            height = height + sizeOfStep;
-            section = I(a:height, 1:width);
+            if (a + sizeOfStep + height < limitH)
+                a = a + sizeOfStep;
+            end
         elseif strcmp(eventdata.Key, 'leftarrow')
-            disp('leftarrow');
+            if (b - sizeOfStep > 0)
+                b = b - sizeOfStep;
+            end
         elseif strcmp(eventdata.Key, 'rightarrow')
-            disp('rightarrow');
+            if (b + sizeOfStep + width < limitW)
+                b = b + sizeOfStep;
+            end
         end
+        % show the new section of the image
+        section = I(a:a + height, b:b + width);
         axes(mainAxe);
         imshow(section);
         colormap bone;

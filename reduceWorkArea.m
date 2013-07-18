@@ -1,8 +1,9 @@
 function reducedImage = reduceWorkArea(originalImage)
     
     % binarize image
-    threshold = graythresh(originalImage);
-    bw = im2bw(originalImage, threshold);
+    imageDouble = double(originalImage);
+    threshold = graythresh(imageDouble);
+    bw = im2bw(imageDouble, threshold);
 
     % delete the little objects
     bw2 = bwareaopen(bw, 10000); % delete objects with less than 10000 pixels
