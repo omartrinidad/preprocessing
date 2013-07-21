@@ -1,6 +1,5 @@
 
 % icons /usr/share/icons
-% get pixels with percentages
 
 function varargout = main(varargin)
     % Description of GUI and main variables
@@ -14,6 +13,7 @@ function varargout = main(varargin)
                'numbertitle', 'off', 'dockcontrols', 'off', ...
                'tag', 'maingui', 'menubar', 'none');
         set(hMainFigure, 'keypressfcn', @mainKeyPressFcn);
+        set(hMainFigure, 'deletefcn', @close);
 
         % GUI Controls
         % Position -> [hposition vposition hsize vsize] percentage
@@ -25,6 +25,8 @@ function varargout = main(varargin)
         mainMenu = uimenu('label', 'File');
         openFile = uimenu(mainMenu, 'label', 'Load image(s)', ...
                           'callback', @openFileCallback);
+        optionsContrast = uimenu('label', 'Contrast', ...
+                          'callback', @contrast);
 
         % Axe
         position = [.17 .02 .81 .94];
@@ -119,6 +121,10 @@ function varargout = main(varargin)
         end
         colormap bone;
     end % ending showImage function
+
+    function main
+        close all;
+    end
     
     % function to catch keyboard events, is possible control the 
     % image with the movement keys
@@ -151,4 +157,11 @@ function varargout = main(varargin)
         imshow(section);
         colormap bone;
     end
+
+    function close(hObject, eventdata)
+        % close all the windows
+        % check the CloseRequestFcn property
+        close all;
+    end
+
 end % ending main function
