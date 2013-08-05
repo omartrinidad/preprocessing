@@ -1,5 +1,7 @@
 
 % icons /usr/share/icons
+% First /nick omart and then /msg nickserv register yourpassword youremail
+% receive an email: /msg NickServ VERIFY REGISTER omartrinidad somethingalgo
 
 function varargout = main(varargin)
     % Description of GUI and main variables
@@ -41,6 +43,7 @@ function varargout = main(varargin)
         a = 1;
         b = 1;
         section = [];
+        imageLoaded = 0;
     else
         figure(hMainFigure);
     end %end of Singleton
@@ -63,7 +66,6 @@ function varargout = main(varargin)
         if ~path
             return;
         elseif ~iscell(files)
-            fprintf('Only one file choosed\n');
             temp = files;
             files = cell(1);
             files{1} = temp;
@@ -120,12 +122,9 @@ function varargout = main(varargin)
             imshow(section);
         end
         colormap bone;
+        imageLoaded = 1;
     end % ending showImage function
 
-    function main
-        close all;
-    end
-    
     % function to catch keyboard events, is possible control the 
     % image with the movement keys
     function mainKeyPressFcn(hObject, eventdata)
@@ -151,17 +150,25 @@ function varargout = main(varargin)
                 b = b + sizeOfStep;
             end
         end
-        % show the new section of the image
-        section = I(a:a + height, b:b + width);
-        axes(mainAxe);
-        imshow(section);
-        colormap bone;
+
+        contrastGUI = findobj('tag', 'contrast');
+        %contrastGUIData = getappdata(contrastGUI);
+        % contrastGUIData = getappdata(contrastGUI, 'childGUI');
+        %disp(contrastGUIData.value);
+        
+        if imageLoaded
+            % show section of image only if is loaded in the axe
+            section = I(a:a + height, b:b + width);
+            axes(mainAxe);
+            imshow(section);
+            colormap bone;
+        end
     end
 
     function close(hObject, eventdata)
-        % close all the windows
+        % delete all the windows
         % check the CloseRequestFcn property
-        close all;
+        delete(findobj(0,'type','figure'));
     end
 
 end % ending main function
