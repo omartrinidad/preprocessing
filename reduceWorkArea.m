@@ -25,3 +25,4 @@ function reducedImage = reduceWorkArea(originalImage)
 
     % cut the image
     reducedImage = originalImage(min_y: max_y, min_x:max_x);
+end
