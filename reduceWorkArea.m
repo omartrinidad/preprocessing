@@ -2,7 +2,6 @@
 function reducedImage = reduceWorkArea(originalImage)
     
     % binarize image
-    fig = figure;
     threshold = graythresh(originalImage);
 
     bw = im2bw(originalImage, threshold);
@@ -58,4 +57,4 @@ function reducedImage = reduceWorkArea(originalImage)
     %colormap bone;
     %print(fig, '-dpsc2', 'reduced.eps');    
     %imshow(image(min_y: max_y+150, min_x-150:max_x)); % b.dcm and d.dcm
-
+end
