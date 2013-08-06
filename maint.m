@@ -29,10 +29,25 @@ function imagesEPSContrast()
     dicom = dicomread('0001/62199132.dcm');
     dicom = reduceWorkArea(dicom);
     dicom = f12to16bits(dicom);
-    I = dicom(50:600, 900:1300);
+    I = dicom(1500:2300, 600:1300);
     I = adpmedian(I, 7);
 
-    imageAfterCLAHE = adapthisteq(I, 'cliplimit', 0.0025, 'numtiles', [5 5]);
-    figure, imshow(I); colormap bone;
-    figure, imshow(imageAfterCLAHE); colormap bone;
+    imageAfterCLAHE = adapthisteq(I, 'cliplimit', 0.0025, ...
+                                 'numtiles', [10 10], 'nbins', 256, ...
+                                 'distribution', 'exponential');
+    
+    fig = figure;
+    imshow(I); colormap bone;
+    print(fig, '-dpsc2', 'images/contrast/before-clahe.eps');    
+
+    [data, x] = imhist(I); 
+    bar(data); grid on; axis off; title('Histogram before CLAHE');
+    print(fig, '-dpsc2', 'images/contrast/before-clahe-hist.eps');    
+
+    imshow(imageAfterCLAHE); colormap bone;
+    print(fig, '-dpsc2', 'images/contrast/after-clahe.eps');    
+
+    [data, x] = imhist(imageAfterCLAHE); 
+    bar(data); grid on; axis off; title('Histogram after CLAHE');
+    print(fig, '-dpsc2', 'images/contrast/after-clahe-hist.eps');    
 end
