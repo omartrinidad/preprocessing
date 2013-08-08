@@ -73,3 +73,19 @@ h2 {
     margin: 1.33em;
     padding: 1.33em;
 }
+
+table {
+    width: 90%;
+    margin: 0 5%;
+}
+
+td {
+    text-align: center;
+    font-weight: normal;
+}
+
+th {
+    color: white;
+    background-color: #55BB55;
+    padding: 0.33em;
+}
