@@ -1,11 +1,11 @@
 @import url('reset.css');
-@import url(http://fonts.googleapis.com/css?family=Nunito);
+@import url(http://fonts.googleapis.com/css?family=Nunito|Carrois+Gothic);
 
 body {
     color: black;
-    font-size: 14px;
+    font-size: 15px;
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Carrois Gothic', sans-serif;
     line-height: 150%;
 }
 
@@ -13,14 +13,20 @@ p {
     padding: 0 0 1.33em 0;
 }
 
+/* [ headings ] */
+
 h1 {
-    font-size: 1.22em;
+    font-size: 1.44em;
+    font-weight: bold;
+    padding: 0 0 1.33em 0;
+    color: #55BB55;
 }
 
 h2 {
-    font-size: 1.11em;
+    font-size: 1.22em;
     font-weight: bold;
     padding: 0 0 1.33em 0;
+    color: #55BB55;
 }
 
 .wrapper {
@@ -31,7 +37,7 @@ h2 {
 /********* [ Header ] **********/
 
 .top {
-    background-color: #33BB33;
+    background-color: #55BB55;
     color: white;
     margin: 0;
     font-size: 2.44em;
@@ -39,11 +45,17 @@ h2 {
     padding: 1.33em 1.33em 0.44em 1.33em;
 }
 
+.top h1 {
+    font-size: 1em;
+    color: white;
+    padding: 0 0 1em 0;
+}
+
 .top .nav ul{
     color: white;
     float: right;
     list-style-type: none;
-    font-size: 0.6em;
+    font-size: 0.45em;
     padding-top: 2.33em;
 }
 
@@ -60,7 +72,7 @@ h2 {
 }
 
 .top .nav li a:hover {
-    color: #33BB33;
+    color: #55BB55;
     background-color: white;
 }
 
@@ -68,11 +80,16 @@ h2 {
     clear: both;
 }
 
+/************** [ content ] ****************/
+
 .middle {
     font-size: 1.1em;
-    margin: 1.33em;
-    padding: 1.33em;
+    padding: 2.33em;
+    border-left: 1px solid #55BB55;
+    border-right: 1px solid #55BB55;
 }
+
+/* [ table style ] */
 
 table {
     width: 90%;
@@ -82,10 +99,20 @@ table {
 td {
     text-align: center;
     font-weight: normal;
+    padding: 0.33em;
 }
 
 th {
     color: white;
     background-color: #55BB55;
     padding: 0.33em;
+}
+
+/************** [ footer ] ****************/
+
+.bottom {
+    color: white;
+    background-color: #55BB55;;
+    text-align: center;
+    font-size: 0.9em;
 }
