@@ -1,46 +1,75 @@
+@import url('reset.css');
+@import url(http://fonts.googleapis.com/css?family=Nunito);
 
 body {
     color: black;
     font-size: 14px;
     margin: 0;
+    font-family: sans-serif;
+    line-height: 150%;
 }
 
-/*.wrapper {
+p {
+    padding: 0 0 1.33em 0;
+}
+
+h1 {
+    font-size: 1.22em;
+}
+
+h2 {
+    font-size: 1.11em;
+    font-weight: bold;
+    padding: 0 0 1.33em 0;
+}
+
+.wrapper {
     width: 84%;
-    margin-left: 8%;
-    margin-right: 8%;
-    padding: 10px;
-}*/
+    margin: 0 8% 0 8%;
+}
 
 /********* [ Header ] **********/
 
 .top {
-    background-color: ##33BB33;
+    background-color: #33BB33;
     color: white;
+    margin: 0;
+    font-size: 2.44em;
+    font-family: 'Nunito', sans-serif;
+    padding: 1.33em 1.33em 0.44em 1.33em;
 }
 
-.title-page {
-    font-size: 1.55em;
-    float: left;
-    width: 45%;
-    padding: 10px;
-}
-
-.top ul {
+.top .nav ul{
     color: white;
     float: right;
     list-style-type: none;
+    font-size: 0.6em;
+    padding-top: 2.33em;
 }
 
-.top li {
+.top .nav li {
     float: left;
+    margin: 0 0 0 10px;
+    padding: 0.4em;
 }
 
-.top li a {
+.top .nav li a {
     color: white;
+    text-decoration: none;
+    padding: 0.4em;
 }
 
-.top li a:hover {
-    background-color: white;
+.top .nav li a:hover {
     color: #33BB33;
+    background-color: white;
+}
+
+.fix {
+    clear: both;
+}
+
+.middle {
+    font-size: 1.1em;
+    margin: 1.33em;
+    padding: 1.33em;
 }
