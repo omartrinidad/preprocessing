@@ -1,0 +1,46 @@
+
+body {
+    color: black;
+    font-size: 14px;
+    margin: 0;
+}
+
+/*.wrapper {
+    width: 84%;
+    margin-left: 8%;
+    margin-right: 8%;
+    padding: 10px;
+}*/
+
+/********* [ Header ] **********/
+
+.top {
+    background-color: ##33BB33;
+    color: white;
+}
+
+.title-page {
+    font-size: 1.55em;
+    float: left;
+    width: 45%;
+    padding: 10px;
+}
+
+.top ul {
+    color: white;
+    float: right;
+    list-style-type: none;
+}
+
+.top li {
+    float: left;
+}
+
+.top li a {
+    color: white;
+}
+
+.top li a:hover {
+    background-color: white;
+    color: #33BB33;
+}
