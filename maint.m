@@ -5,7 +5,7 @@ end
 
 % generates images showing the noise generation and the denoising 
 function imagesEPSNoise(I)
-    dicom = dicomread('0001/62199100.dcm');
+    dicom = dicomread('1/rcc.dcm');
     dicom = reduceWorkArea(dicom);
     dicom = f12to16bits(dicom);
 
@@ -26,7 +26,7 @@ end
 
 % generates images and histograms before and after the contrast enhancement
 function imagesEPSContrast()
-    dicom = dicomread('0001/62199132.dcm');
+    dicom = dicomread('1/rmlo.dcm');
     dicom = reduceWorkArea(dicom);
     dicom = f12to16bits(dicom);
     I = dicom(1500:2300, 600:1300);
@@ -41,13 +41,15 @@ function imagesEPSContrast()
     print(fig, '-dpsc2', 'images/contrast/before-clahe.eps');    
 
     [data, x] = imhist(I); 
-    bar(data); grid on; axis off; title('Histogram before CLAHE');
+    bar(data); grid on;
+    set(gca,'box', 'on','xticklabel', [],'yticklabel', [], 'linewidth', 2.5);
     print(fig, '-dpsc2', 'images/contrast/before-clahe-hist.eps');    
 
     imshow(imageAfterCLAHE); colormap bone;
     print(fig, '-dpsc2', 'images/contrast/after-clahe.eps');    
 
     [data, x] = imhist(imageAfterCLAHE); 
-    bar(data); grid on; axis off; title('Histogram after CLAHE');
+    bar(data); grid on; 
+    set(gca,'box', 'on','xticklabel', [],'yticklabel', [], 'linewidth', 2.5);
     print(fig, '-dpsc2', 'images/contrast/after-clahe-hist.eps');    
 end
