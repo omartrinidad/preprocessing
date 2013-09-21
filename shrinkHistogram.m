@@ -2,7 +2,7 @@
 % generates images showing the compression process
 function [newData imageCopy] = shrinkHistogram()
 
-    dicom = dicomread('1/rcc.dcm');
+    dicom = dicomread('col/1/rcc.dcm');
     dicom = reduceWorkArea(dicom);
     image = f12to16bits(dicom);
     %image = adpmedian(dicom, 9);
@@ -31,7 +31,7 @@ function [newData imageCopy] = shrinkHistogram()
 
     % plot original histogram
     bar(data(2:end)); grid on;
-    set(gca,'box', 'on','xticklabel', [],'yticklabel', [], 'linewidth', 2.5);
+    set(gca,'box', 'on','xticklabel', 'Levels of gray' ,'yticklabel', [], 'linewidth', 2.5);
     print(fig, '-dpsc2', 'images/compress/original-image-histogram.eps');
     
     % shrink histogram, the gaps are deleted
