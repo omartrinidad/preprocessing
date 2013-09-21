@@ -31,7 +31,9 @@ function [newData imageCopy] = shrinkHistogram()
 
     % plot original histogram
     bar(data(2:end)); grid on;
-    set(gca,'box', 'on','xticklabel', 'Levels of gray' ,'yticklabel', [], 'linewidth', 2.5);
+    set(gca,'box', 'on', 'linewidth', 2.5);
+    xlabel('Range of Intensity');
+    ylabel('Frequency');
     print(fig, '-dpsc2', 'images/compress/original-image-histogram.eps');
     
     % shrink histogram, the gaps are deleted
@@ -47,7 +49,9 @@ function [newData imageCopy] = shrinkHistogram()
     end
     % plot shrunk histogram
     bar(newData(2:end)); grid on; 
-    set(gca,'box', 'on','xticklabel', [],'yticklabel', [], 'linewidth', 2.5);
+    set(gca,'box', 'on', 'linewidth', 2.5);
+    xlabel('Range of Intensity');
+    ylabel('Frequency');
     print(fig, '-dpsc2', 'images/compress/shrunk-histogram.eps');
 
     % modify the image from the new histogram
@@ -60,7 +64,9 @@ function [newData imageCopy] = shrinkHistogram()
     % dark mammogram histogram
     [a b] = imhist(image);
     bar(a(2:end)); grid on;
-    set(gca,'box', 'on','xticklabel', [],'yticklabel', [], 'linewidth', 2.5);
+    set(gca,'box', 'on', 'linewidth', 2.5);
+    xlabel('Range of Intensity');
+    ylabel('Frequency');
     print(fig, '-dpsc2', 'images/compress/dark-mammogram-histogram.eps');
 
     % ------------[ pixel depth conversion ]-----------------------
@@ -90,7 +96,9 @@ function [newData imageCopy] = shrinkHistogram()
     % compressed mammogram histogram
     [a b] = imhist(imageCopy);
     bar(a(2:end)); grid on; 
-    set(gca,'box', 'on','xticklabel', [],'yticklabel', [], 'linewidth', 2.5);
+    set(gca,'box', 'on', 'linewidth', 2.5);
+    xlabel('Range of Intensity');
+    ylabel('Frequency');
     print(fig, '-dpsc2', 'images/compress/compressed-mammogram-histogram.eps');
 
     %second method
