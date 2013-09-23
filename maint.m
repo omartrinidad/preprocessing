@@ -1,11 +1,26 @@
 function maint()
-    imagesEPSContrast();
+    % imagesEPSContrast();
     % imagesEPSNoise();
+    imagesEPSBits();
+end
+
+% generates images in 12 and 16 bits
+function imagesEPSBits()
+    dicom = dicomread('col/1/rmlo.dcm');
+
+    reducedImage = reduceWorkArea(dicom);
+    fig = figure;
+    imshow(reducedImage); colormap bone;
+    print(fig, '-dpsc2', 'images/bits/12bits.eps');    
+
+    convertedImage = f12to16bits(reducedImage);
+    imshow(convertedImage); colormap bone;
+    print(fig, '-dpsc2', 'images/bits/16bits.eps');    
 end
 
 % generates images showing the noise generation and the denoising 
-function imagesEPSNoise(I)
-    dicom = dicomread('1/rcc.dcm');
+function imagesEPSNoise()
+    dicom = dicomread('col/1/rcc.dcm');
     dicom = reduceWorkArea(dicom);
     dicom = f12to16bits(dicom);
 
@@ -26,7 +41,7 @@ end
 
 % generates images and histograms before and after the contrast enhancement
 function imagesEPSContrast()
-    dicom = dicomread('1/rmlo.dcm');
+    dicom = dicomread('col/1/rmlo.dcm');
     dicom = reduceWorkArea(dicom);
     dicom = f12to16bits(dicom);
     I = dicom(1500:2300, 600:1300);
@@ -42,7 +57,9 @@ function imagesEPSContrast()
 
     [data, x] = imhist(I); 
     bar(data); grid on;
-    set(gca,'box', 'on','xticklabel', [],'yticklabel', [], 'linewidth', 2.5);
+    set(gca,'box', 'on', 'linewidth', 2.5);
+    xlabel('Range of Intensity');
+    ylabel('Frequency');
     print(fig, '-dpsc2', 'images/contrast/before-clahe-hist.eps');    
 
     imshow(imageAfterCLAHE); colormap bone;
@@ -50,6 +67,8 @@ function imagesEPSContrast()
 
     [data, x] = imhist(imageAfterCLAHE); 
     bar(data); grid on; 
-    set(gca,'box', 'on','xticklabel', [],'yticklabel', [], 'linewidth', 2.5);
+    set(gca,'box', 'on', 'linewidth', 2.5);
+    xlabel('Range of Intensity');
+    ylabel('Frequency');
     print(fig, '-dpsc2', 'images/contrast/after-clahe-hist.eps');    
 end
