@@ -1,20 +1,10 @@
 
-function reducedImage = reduceWorkArea()
+function reducedImage = reduceWorkArea(originalImage)
     
-    originalImage = dicomread('col/1/rcc.dcm');
-    originalImage = f12to16bits(originalImage); % only for better visualization
-
-    fig = figure;
-    imshow(originalImage); colormap bone;
-    print(fig, '-dpsc2', 'images/area/original.eps');
-
     % binarize image
     imageDouble = double(originalImage);
     threshold = graythresh(imageDouble);
     bw = im2bw(imageDouble, threshold);
-
-    imshow(bw); 
-    print(fig, '-dpsc2', 'images/area/whiteandblack.eps');
 
     % delete the little objects
     bw2 = bwareaopen(bw, 10000); % delete objects with less than 10000 pixels
