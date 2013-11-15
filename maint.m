@@ -1,21 +1,21 @@
 function maint()
-    % imagesEPSContrast();
+    imagesEPSContrast();
     % imagesEPSNoise();
-    imagesEPSBits();
+    % imagesEPSBits();
 end
 
 % generates images in 12 and 16 bits
 function imagesEPSBits()
-    dicom = dicomread('col/1/rmlo.dcm');
+    dicom = dicomread('col/17/lmlo.dcm'); %in article: 1,rmlo
 
     reducedImage = reduceWorkArea(dicom);
     fig = figure;
     imshow(reducedImage); colormap bone;
-    print(fig, '-dpsc2', 'images/bits/12bits.eps');    
+    print(fig, '-djpeg', 'images/bits/12bits.jpg');    
 
     convertedImage = f12to16bits(reducedImage);
     imshow(convertedImage); colormap bone;
-    print(fig, '-dpsc2', 'images/bits/16bits.eps');    
+    print(fig, '-djpeg', 'images/bits/16bits.jpg');    
 end
 
 % generates images showing the noise generation and the denoising 
@@ -32,11 +32,11 @@ function imagesEPSNoise()
     fig = figure;
     imshow(imageWithNoise);
     colormap bone;
-    print(fig, '-dpsc2', 'images/noise/close-up-with-noise.eps');    
+    print(fig, '-djpeg', 'images/noise/close-up-with-noise.jpg');    
 
     imshow(imageWithoutNoise);
     colormap bone;
-    print(fig, '-dpsc2', 'images/noise/close-up-denoised-image.eps');    
+    print(fig, '-djpeg', 'images/noise/close-up-denoised-image.jpg');    
 end
 
 % generates images and histograms before and after the contrast enhancement
@@ -53,22 +53,22 @@ function imagesEPSContrast()
     
     fig = figure;
     imshow(I); colormap bone;
-    print(fig, '-dpsc2', 'images/contrast/before-clahe.eps');    
+    print(fig, '-djpeg', 'images/contrast/before-clahe.jpg');    
 
     [data, x] = imhist(I); 
     bar(data); grid on;
-    set(gca,'box', 'on', 'linewidth', 2.5);
-    xlabel('Range of Intensity');
-    ylabel('Frequency');
-    print(fig, '-dpsc2', 'images/contrast/before-clahe-hist.eps');    
+    set(gca,'box', 'on', 'linewidth', 2.5, 'fontsize', 16);
+    xlabel('Range of Intensity', 'fontsize', 23);
+    ylabel('Frequency', 'fontsize', 23);
+    print(fig, '-djpeg', 'images/contrast/before-clahe-hist.jpg');    
 
     imshow(imageAfterCLAHE); colormap bone;
-    print(fig, '-dpsc2', 'images/contrast/after-clahe.eps');    
+    print(fig, '-djpeg', 'images/contrast/after-clahe.jpg');    
 
     [data, x] = imhist(imageAfterCLAHE); 
     bar(data); grid on; 
-    set(gca,'box', 'on', 'linewidth', 2.5);
-    xlabel('Range of Intensity');
-    ylabel('Frequency');
-    print(fig, '-dpsc2', 'images/contrast/after-clahe-hist.eps');    
+    set(gca,'box', 'on', 'linewidth', 2.5, 'fontsize', 16);
+    xlabel('Range of Intensity', 'fontsize', 23);
+    ylabel('Frequency', 'fontsize', 23);
+    print(fig, '-djpeg', 'images/contrast/after-clahe-hist.jpg');    
 end

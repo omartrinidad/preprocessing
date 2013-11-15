@@ -2,22 +2,22 @@
 % generates images showing the compression process
 function [newData imageCopy] = shrinkHistogram()
 
-    dicom = dicomread('col/1/rcc.dcm');
+    dicom = dicomread('col/8/lcc.dcm'); % in article 1, rcc
     dicom = reduceWorkArea(dicom);
     image = f12to16bits(dicom);
     %image = adpmedian(dicom, 9);
 
     %image = adapthisteq(dicom, 'cliplimit', 0.0025, ...
-    %                             'numtiles', [10 10], 'nbins', 256, ...
-    %                             'distribution', 'exponential');
+    %                           'numtiles', [10 10], 'nbins', 256, ...
+    %                           'distribution', 'exponential');
 
     % ------------[ image shrinking procedure ]-----------------------
-    fprintf('image shrinking procedure');
+    fprintf('image shrinking procedure\n');
 
     fig = figure;
     % original mammogram 16 bits
     imshow(image); colormap bone;
-    print(fig, '-dpsc2', 'images/compress/original-mammogram-16bits.eps');
+    print(fig, '-djpeg', 'images/compress/original-mammogram-16bits.jpg');
     
     grays = 2^16; 
     [data, x] = imhist(image, grays); 
@@ -31,10 +31,10 @@ function [newData imageCopy] = shrinkHistogram()
 
     % plot original histogram
     bar(data(2:end)); grid on;
-    set(gca,'box', 'on', 'linewidth', 2.5);
-    xlabel('Range of Intensity');
-    ylabel('Frequency');
-    print(fig, '-dpsc2', 'images/compress/original-image-histogram.eps');
+    set(gca,'box', 'on', 'linewidth', 2.5, 'fontsize', 16);
+    xlabel('Range of Intensity', 'fontsize', 23);
+    ylabel('Frequency', 'fontsize', 23);
+    print(fig, '-djpeg', 'images/compress/original-image-histogram.jpg');
     
     % shrink histogram, the gaps are deleted
     newData = zeros(width, 1);
@@ -49,28 +49,28 @@ function [newData imageCopy] = shrinkHistogram()
     end
     % plot shrunk histogram
     bar(newData(2:end)); grid on; 
-    set(gca,'box', 'on', 'linewidth', 2.5);
-    xlabel('Range of Intensity');
-    ylabel('Frequency');
-    print(fig, '-dpsc2', 'images/compress/shrunk-histogram.eps');
+    set(gca,'box', 'on', 'linewidth', 2.5, 'fontsize', 16);
+    xlabel('Range of Intensity', 'fontsize', 23);
+    ylabel('Frequency', 'fontsize', 23);
+    print(fig, '-djpeg', 'images/compress/shrunk-histogram.jpg');
 
     % modify the image from the new histogram
     image = shrinkImage(image, usedGrayLevels, grays);
 
     % dark mammogram 16 bits
     imshow(image); colormap bone;
-    print(fig, '-dpsc2', 'images/compress/dark-mammogram.eps');
+    print(fig, '-djpeg', 'images/compress/dark-mammogram.jpg');
     
     % dark mammogram histogram
     [a b] = imhist(image);
     bar(a(2:end)); grid on;
-    set(gca,'box', 'on', 'linewidth', 2.5);
-    xlabel('Range of Intensity');
-    ylabel('Frequency');
-    print(fig, '-dpsc2', 'images/compress/dark-mammogram-histogram.eps');
+    set(gca,'box', 'on', 'linewidth', 2.5, 'fontsize', 16);
+    xlabel('Range of Intensity', 'fontsize', 23);
+    ylabel('Frequency', 'fontsize', 23);
+    print(fig, '-djpeg', 'images/compress/dark-mammogram-histogram.jpg');
 
     % ------------[ pixel depth conversion ]-----------------------
-    fprintf('pixel depth conversion');
+    fprintf('pixel depth conversion\n');
 
     % compression
     [height width] = size(image);
@@ -92,29 +92,30 @@ function [newData imageCopy] = shrinkHistogram()
 
     % compressed mammogram
     imshow(imageCopy); colormap bone;
-    print(fig, '-dpsc2', 'images/compress/compressed-mammogram-8bits.eps');
+    print(fig, '-djpeg', 'images/compress/compressed-mammogram-8bits.jpg');
+
     % compressed mammogram histogram
     [a b] = imhist(imageCopy);
     bar(a(2:end)); grid on; 
-    set(gca,'box', 'on', 'linewidth', 2.5);
-    xlabel('Range of Intensity');
-    ylabel('Frequency');
-    print(fig, '-dpsc2', 'images/compress/compressed-mammogram-histogram.eps');
+    set(gca,'box', 'on', 'linewidth', 2.5, 'fontsize', 16);
+    xlabel('Range of Intensity', 'fontsize', 23);
+    ylabel('Frequency', 'fontsize', 23);
+    print(fig, '-djpeg', 'images/compress/compressed-mammogram-histogram.jpg');
 
     %second method
-    [height width] = size(image);
-    imageCopy = repmat(uint8(0), height, width);
-    minValue = double(min(image(:)));
-    maxValue = double(max(image(:)));
-    piece = double(255.0/(maxValue - minValue));
-    for h=1:1:height
-        for w=1:1:width
-           imageCopy(h, w) = uint8((image(h, w) - minValue)*piece);
-        end
-    end
-    
+    %[height width] = size(image);
+    %imageCopy = repmat(uint8(0), height, width);
+    %minValue = double(min(image(:)));
+    %maxValue = double(max(image(:)));
+    %piece = double(255.0/(maxValue - minValue));
+    %for h=1:1:height
+    %    for w=1:1:width
+    %       imageCopy(h, w) = uint8((image(h, w) - minValue)*piece);
+    %    end
+    %end
+
     % third method    
-    imageCopy = uint8(image/256);
+    % imageCopy = uint8(image/256);
 
 function newImage = shrinkImage(image, minVal, maxVal)
     valueDesired = 1.0/(maxVal/minVal);
