@@ -51,7 +51,7 @@ h2 {
     padding: 0 0 1em 0;
 }
 
-.top .nav ul{
+.top #nav ul{
     color: white;
     float: right;
     list-style-type: none;
@@ -59,19 +59,19 @@ h2 {
     padding-top: 2.33em;
 }
 
-.top .nav li {
+.top #nav li {
     float: left;
     margin: 0 0 0 10px;
     padding: 0.4em;
 }
 
-.top .nav li a {
+.top #nav li a {
     color: white;
     text-decoration: none;
     padding: 0.4em;
 }
 
-.top .nav li a:hover {
+.top #nav li a:hover {
     color: #55BB55;
     background-color: white;
 }
