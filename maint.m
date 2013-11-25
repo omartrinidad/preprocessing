@@ -1,6 +1,6 @@
 function maint()
-    imagesEPSContrast();
-    % imagesEPSNoise();
+    % imagesEPSContrast();
+    imagesEPSNoise();
     % imagesEPSBits();
 end
 
