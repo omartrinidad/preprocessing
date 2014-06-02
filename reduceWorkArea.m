@@ -1,6 +1,6 @@
 
 function reducedImage = reduceWorkArea(originalImage)
-    
+
     % binarize image
     imageDouble = double(originalImage);
     threshold = graythresh(imageDouble);
